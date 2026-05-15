@@ -1,21 +1,37 @@
 <?php
-
 include 'db_config.php';
+class SignupSystem {
+    private $conn;
+    public function __construct($connection) {
+        $this->conn = $connection;
+    }
+    public function signup($name, $email, $password): bool {
+        $pass = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO users (username, email, password)
+                VALUES ('$name', '$email', '$pass')";
+        if(mysqli_query($this->conn, $sql)){
+            return true;
+        }
+        return false;
+    }
+}
 
-// إذا استلم الملف بيانات (عن طريق AJAX)
 if (isset($_POST['name'])) {
+
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $pass = password_hash($_POST['pass'], PASSWORD_DEFAULT); // تشفير الباسورد للحماية
+    $password = $_POST['pass'];
 
-    $sql = "INSERT INTO users (username, email, password) VALUES ('$name', '$email', '$pass')";
-    
-    if (mysqli_query($conn, $sql)) {
+    $signup = new SignupSystem($conn);
+
+    if($signup->signup($name, $email, $password)){
         echo "success";
-    } else {
+    }
+    else{
         echo "error";
     }
-    exit(); // نوقف الكود هنا عشان ما يطبع الـ HTML مرتين
+
+    exit();
 }
 ?>
 
@@ -83,7 +99,7 @@ if (isset($_POST['name'])) {
                 return;
             }
 
-            $.post("signup.php", // بينادي نفس الملف اللي احنا فيه
+            $.post("signup.php", 
             {
                 name: fullname,
                 email: email,
@@ -92,7 +108,7 @@ if (isset($_POST['name'])) {
             function(data){
                 if(data.trim() == "success"){
                     alert("Account created successfully!");
-                    window.location.href = "login.php"; // يحوله لصفحة الدخول بعد النجاح
+                    window.location.href = "login.php"; 
                 } else {
                     alert("Sign up failed! Email might be already used.");
                 }

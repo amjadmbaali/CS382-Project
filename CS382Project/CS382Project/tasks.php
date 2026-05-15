@@ -1,9 +1,25 @@
 <?php
 session_start();
-include 'db_config.php'; // هذا الجسر اللي يربطك بالقاعدة [cite: 82, 125]
+include 'db_config.php'; 
 
-// نأخذ رقم المستخدم اللي سجل دخول عشان نعرض مهامه هو بس
 $uid = $_SESSION['user_id']; 
+class TaskViewer {
+
+    private $conn;
+
+    public function __construct($connection) {
+        $this->conn = $connection;
+    }
+
+    public function getTasks($uid) {
+
+        $query = "SELECT * FROM tasks
+                  WHERE user_id='$uid'
+                  ORDER BY id DESC";
+
+        return mysqli_query($this->conn, $query);
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,22 +62,21 @@ $uid = $_SESSION['user_id'];
                 <div class="task-list">
                     <ul id="items-list">
                         <?php
-$query = "SELECT * FROM tasks WHERE user_id='$uid' ORDER BY id DESC";
-$result = mysqli_query($conn, $query);
+$taskViewer = new TaskViewer($conn);
+$result = $taskViewer->getTasks($uid);
 
 while($row = mysqli_fetch_assoc($result)) {
-    // Check if task is finished to mark the checkbox
     $status = ($row['status'] == 'completed') ? 'checked' : '';
     
     echo '
     <li class="task-item">
         <div class="task-info">
-            <input type="checkbox" '.$status.'>
+      <input type="checkbox" class="check-task" data-id="'.$row['id'].'" '.$status.'>
             <span class="task-text">'.$row['task_text'].'</span>
         </div>
         <div class="actions">
-            <i class="fas fa-edit edit-icon"></i>
-            <i class="fas fa-trash delete-icon"></i>
+            <i class="fas fa-edit edit-icon" data-id="'.$row['id'].'"></i>
+           <i class="fas fa-trash delete-icon" data-id="'.$row['id'].'"></i>
         </div>
     </li>';
 }
@@ -73,41 +88,65 @@ while($row = mysqli_fetch_assoc($result)) {
     </div>
     <script>
 $(document).ready(function(){
-         $(".delete-icon").click(function(){
-        $(this).parents(".task-item").remove();
-    });
-
-   $(".edit-icon").click(function(){
-        let oldText =$(this).parents(".task-item").find(".task-text").text();
-        let newText = prompt("Edit task:", oldText);
-        if(newText != "" && newText != null){
-            $(this).parents(".task-item").find(".task-text").text(newText);
-        }
-    });
-
-     $("input[type='checkbox']").click(function(){
-         let element = $(this).next();
-         let text = element.text();
-         element.css("color","gray");
-    });
 
     $("#add-btn").click(function(){
-        let task = $("#task-input").val();
-        if(task == ""){
+        let taskValue = $("#task-input").val();
+
+        if(taskValue == ""){
             alert("Please enter a task");
         }
         else{
-            $.post("add_task.php",
+            $.post("index.php",
             {
-                task: task
+                task: taskValue
             },
             function(data){
-               $("#items-list").hide();      
-              $("#items-list").html(data);  
-              $("#items-list").fadeIn();
+                location.reload();
             });
         }
+    });
 
+    $(".delete-icon").click(function(){
+        let id = $(this).data("id");
+
+        $.post("index.php",
+        {
+            delete_id: id
+        },
+        function(data){
+            location.reload();
+        });
+    });
+
+  $(".edit-icon").click(function(){
+    let id = $(this).data("id");
+    $(this).parents(".task-item").text("Edited Task");
+    $.post("index.php",
+    {
+        edit_id: id,
+        new_task: "Edited Task"
+    },
+    function(data){
+        location.reload();
+    });
+
+});
+
+    $(".check-task").click(function(){
+        let id = $(this).data("id");
+        $.post("index.php",
+        {
+            complete_id: id
+        },
+        function(data){
+            location.reload();
+        });
+    });
+
+    $("#notif-bell").click(function(){
+        $.get("get_notification.php", function(data){
+            $("#toast-count").text(data);
+        });
     });
 
 });

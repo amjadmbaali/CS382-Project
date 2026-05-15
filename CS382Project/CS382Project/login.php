@@ -2,27 +2,52 @@
 session_start();
 include 'db_config.php';
 
-// Check if data is coming from the form
+class LoginSystem {
+
+    private $conn;
+
+    public function __construct($connection) {
+        $this->conn = $connection;
+    }
+
+    public function login($username, $password): bool {
+
+        $sql = "SELECT * FROM users 
+                WHERE email='$username' 
+                OR username='$username'";
+
+        $result = mysqli_query($this->conn, $sql);
+        $user = mysqli_fetch_assoc($result);
+
+        if ($user && password_verify($password, $user['password'])) {
+
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+
+            return true;
+        }
+
+        return false;
+    }
+}
+
 if (isset($_POST['user'])) {
+
     $u = $_POST['user'];
     $p = $_POST['pass'];
 
-    // Search for the user by email or username
-    $sql = "SELECT * FROM users WHERE email='$u' OR username='$u'";
-    $result = mysqli_query($conn, $sql);
-    $user = mysqli_fetch_assoc($result);
+    $login = new LoginSystem($conn);
 
-    // Verify password
-    if ($user && password_verify($p, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['username'] = $user['username'];
-        echo "success"; // This tells your JavaScript that login is okay
+    if ($login->login($u, $p)) {
+        echo "success";
     } else {
         echo "fail";
     }
-    exit(); // Stop running the rest of the page
+
+    exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,9 +56,9 @@ if (isset($_POST['user'])) {
     <title>Login - YIC To-Do System</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
+
 <body class="login-body">
 
     <div class="login-container">
@@ -59,39 +84,41 @@ if (isset($_POST['user'])) {
                 
                 <div class="login-footer">
                     <a href="#">Forgot Password?</a>
-                    <span>Don't have an account? <a href="signup.html">Sign Up</a></span>
+                    <span>Don't have an account? <a href="signup.php">Sign Up</a></span>
                 </div>
             </form>
         </div>
     </div>
+
 <script>
-    $(document).ready(function(){
+$(document).ready(function(){
+
     $("#login-form").submit(function(e){
-                e.preventDefault();
+        e.preventDefault();
 
-
-        let username =document.getElementById("id1").value;
-        let password =document.getElementById("id2").value;
+        let username = document.getElementById("id1").value;
+        let password = document.getElementById("id2").value;
 
         if(username == "" || password == ""){
             alert("Please fill all fields");
+            return;
         }
-      $.post("login.php", 
-{
-    user: username,
-    pass: password
-},
-function(data){
-    if(data.trim() == "success"){
-        // هذا السطر هو المسؤول عن فتح الموقع بعد نجاح الدخول
-        window.location.href = "index.php"; 
-    } else {
-        alert("Invalid Username or Password");
-    }
-});
-    });
-});
 
+        $.post("login.php",
+        {
+            user: username,
+            pass: password
+        },
+        function(data){
+            if(data.trim() == "success"){
+                window.location.href = "index.php";
+            } else {
+                alert("Invalid Username or Password");
+            }
+        });
+    });
+
+});
 </script>
 
 </body>

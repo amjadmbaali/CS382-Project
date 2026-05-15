@@ -1,8 +1,7 @@
 <?php
 session_start();
-include 'db_config.php'; // هذا الجسر اللي يربطك بالقاعدة [cite: 82, 125]
+include 'db_config.php'; 
 
-// نأخذ رقم المستخدم اللي سجل دخول عشان نعرض مهامه هو بس
 $uid = $_SESSION['user_id']; 
 ?>
 <!DOCTYPE html>
@@ -60,7 +59,7 @@ $uid = $_SESSION['user_id'];
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="weekly-table">
                             <tr>
                                 <td>Sunday</td>
                                 <td>5</td>
@@ -95,18 +94,5 @@ $uid = $_SESSION['user_id'];
             </section>
         </main>
     </div>
-<script>
-$(document).ready(function(){
-
-    $.get("weekly_data.php", function(data){
-        $("#weekly-table").html(data);
-    });
-
-   $.get("weekly_data.php", function(data){
-    $("#weekly-table").html(data);
-});
-
-});
-</script>
 </body>
 </html>
