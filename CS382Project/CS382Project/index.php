@@ -162,7 +162,26 @@ while($row = mysqli_fetch_assoc($result)) {
         </div>
     </div>
     <script>
- $("#add-btn").click(function(){
+$(document).ready(function(){
+    $(".delete-icon").click(function(){
+        $(this).parents(".task-item").remove();
+    });
+
+   $(".edit-icon").click(function(){
+        let oldText =$(this).parents(".task-item").find(".task-text").text();
+        let newText = prompt("Edit task:", oldText);
+        if(newText != "" && newText != null){
+            $(this).parents(".task-item").find(".task-text").text(newText);
+        }
+    });
+
+    $("input[type='checkbox']").click(function(){
+         let element = $(this).next();
+         let text = element.text();
+         element.css("color","gray");
+    });
+
+    $("#add-btn").click(function(){
         let taskValue = $("#task-input").val();
         if(taskValue == ""){
             alert("Please enter a task");
@@ -177,22 +196,7 @@ while($row = mysqli_fetch_assoc($result)) {
                 $("#task-input").val("");
             });
         }
-    });
 
-$(document).ready(function(){
-    $(".delete-icon").click(function(){
-        $(this).parents(".task-item").remove();
-    });
-
- $(".edit-icon").click(function(){
-    $(".task-text").text("Edited Task");
-
-});
-
-    $("input[type='checkbox']").click(function(){
-         let element = $(this).next();
-         let text = element.text();
-         element.css("color","gray");
     });
 
     $("#notif-bell").click(function(){
