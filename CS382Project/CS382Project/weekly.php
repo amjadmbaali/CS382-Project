@@ -1,0 +1,112 @@
+<?php
+session_start();
+include 'db_config.php'; // هذا الجسر اللي يربطك بالقاعدة [cite: 82, 125]
+
+// نأخذ رقم المستخدم اللي سجل دخول عشان نعرض مهامه هو بس
+$uid = $_SESSION['user_id']; 
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Progress - YIC To-Do List</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="YICLogo.jpg" alt="YIC Logo" class="logo-img">
+                <h3>YIC To-Do</h3>
+            </div>
+            <nav>
+                <ul>
+                    <li class="nav-item"><a href="index.php"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li class="nav-item"><a href="tasks.php"><i class="fas fa-tasks"></i> My Tasks</a></li>
+                    <li class="nav-item active"><a href="weekly.php"><i class="fas fa-chart-line"></i> Weekly Progress</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div class="header-title">
+                    <h1>Weekly Performance</h1>
+                    <p>Detailed analysis of your task completion rates</p>
+                </div>
+            </header>
+
+            <section class="weekly-analysis">
+                <div class="chart-box">
+                    <h3>Overall Completion Rate</h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-fill" style="width: 70%;">70% Achievement</div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <h2>Weekly Activity Log</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Tasks Created</th>
+                                <th>Completed</th>
+                                <th>Incomplete</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sunday</td>
+                                <td>5</td>
+                                <td class="text-complete">5</td>
+                                <td class="text-incomplete">0</td>
+                                <td><span class="status-badge perfect">Excellent</span></td>
+                            </tr>
+                            <tr>
+                                <td>Monday</td>
+                                <td>8</td>
+                                <td class="text-complete">5</td>
+                                <td class="text-incomplete">3</td>
+                                <td><span class="status-badge warning">Good Progress</span></td>
+                            </tr>
+                            <tr>
+                                <td>Tuesday</td>
+                                <td>4</td>
+                                <td class="text-complete">1</td>
+                                <td class="text-incomplete">3</td>
+                                <td><span class="status-badge danger">Action Required</span></td>
+                            </tr>
+                            <tr>
+                                <td>Wednesday</td>
+                                <td>6</td>
+                                <td class="text-complete">6</td>
+                                <td class="text-incomplete">0</td>
+                                <td><span class="status-badge perfect">Excellent</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+<script>
+$(document).ready(function(){
+
+    $.get("weekly_data.php", function(data){
+        $("#weekly-table").html(data);
+    });
+
+   $.get("weekly_data.php", function(data){
+    $("#weekly-table").html(data);
+});
+
+});
+</script>
+</body>
+</html>
