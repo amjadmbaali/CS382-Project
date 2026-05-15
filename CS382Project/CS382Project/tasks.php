@@ -77,10 +77,13 @@ $(document).ready(function(){
         $(this).parents(".task-item").remove();
     });
 
-  $(".edit-icon").click(function(){
-    $(".task-text").text("Edited Task");
-
-});
+   $(".edit-icon").click(function(){
+        let oldText =$(this).parents(".task-item").find(".task-text").text();
+        let newText = prompt("Edit task:", oldText);
+        if(newText != "" && newText != null){
+            $(this).parents(".task-item").find(".task-text").text(newText);
+        }
+    });
 
      $("input[type='checkbox']").click(function(){
          let element = $(this).next();
