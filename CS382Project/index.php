@@ -243,14 +243,24 @@ $(document).ready(function() {
 
 
     // Add task asynchronously via AJAX
-    $("#add-btn").click(function() {
-        let text = $("#task-input").val().trim();
-        if (text !== "") {
-            $.post("index.php", { add_task_text: text }, function() {
-                location.reload();
-            });
-        }
-    });
+   $("#add-btn").click(function(){
+
+    let taskValue = $("#task-input").val();
+
+    if(taskValue == ""){
+        alert("Please enter a task");
+    }
+    else{
+        $.post("index.php",
+        {
+            add_task_text: taskValue
+        },
+        function(data){
+            location.reload();
+        });
+    }
+
+});
 
     // Toggle task status checkbox asynchronously via AJAX
     $(".status-checkbox").change(function() {
