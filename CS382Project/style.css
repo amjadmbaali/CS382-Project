@@ -1,4 +1,7 @@
-/* الإعدادات العامة */
+/* ========================================================
+   1. GLOBAL STYLES & RESET 
+   1. الإعدادات العامة وإعادة تعيين العناصر
+   ======================================================== */
 * {
     margin: 0;
     padding: 0;
@@ -11,18 +14,28 @@ body {
     color: #333;
 }
 
+/* Flexbox layout container to align layout pieces side-by-side */
+/* حاوية الفليكس بوكس الرئيسية لمحاذاة أجزاء التصميم جنباً إلى جنب */
 .container {
     display: flex;
     min-height: 100vh;
 }
 
-/* الشريط الجانبي (Sidebar) */
+/* ========================================================
+   2. SIDEBAR NAVIGATION PANELS
+   2. القوائم الجانبية وأنظمة التنقل
+   ======================================================== */
 .sidebar {
     width: 270px;
-    background-color: #1a237e; /* لون أزرق رسمي عميق */
+    background-color: #1a237e; /* Official deep royal blue color / لون أزرق رسمي عميق */
     color: white;
     padding: 30px 20px;
     box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+    /* Sticky assignment ensuring the layout holds viewport position */
+    /* خاصية التثبيت لضمان احتفاظ السايدبار بموقعه أثناء التمرير في المتصفح */
+    position: sticky;
+    top: 0;
+    height: 100vh;
 }
 
 .logo {
@@ -58,6 +71,8 @@ body {
     transition: all 0.3s ease;
 }
 
+/* Active navigation item tab states and hover properties */
+/* حالات تبويب عناصر التنقل النشطة وخصائص حركية المرور */
 .sidebar ul li:hover, .sidebar ul li.active {
     background-color: #3949ab;
 }
@@ -76,10 +91,14 @@ body {
     text-align: center;
 }
 
-/* المحتوى الرئيسي */
+/* ========================================================
+   3. CORE VIEWS & MAIN HEADER LAYOUTS
+   3. مناطق العرض الرئيسية وتنسيقات منطقة الرأس
+   ======================================================== */
 .main-content {
     flex: 1;
     padding: 40px;
+    padding-bottom: 120px; /* يصنع مساحة فارغة بالأسفل تسمح لك بالنزول تحت التنبيه */
     overflow-y: auto;
 }
 
@@ -107,6 +126,8 @@ header p {
     cursor: pointer;
 }
 
+/* Red numeric badge overlay for dynamic system counters */
+/* شارة رقمية حمراء علوية لعدادات النظام الديناميكية */
 .badge {
     position: absolute;
     top: -2px;
@@ -119,7 +140,10 @@ header p {
     border: 2px solid #f8f9fa;
 }
 
-/* بطاقات الإحصائيات */
+/* ========================================================
+   4. STATISTICAL CARDS & METRICS GRID
+   4. بطاقات الإحصائيات وشبكة المقاييس
+   ======================================================== */
 .dashboard-stats {
     display: flex;
     gap: 25px;
@@ -138,12 +162,18 @@ header p {
 
 .stat-card h3 { color: #9e9e9e; font-size: 0.95rem; margin-bottom: 10px; }
 .stat-card p { font-size: 2.2rem; font-weight: bold; }
+
+/* Custom borders color properties for successful and pending tasks states */
+/* خصائص ألوان الحواف المخصصة لحالات المهام المكتملة والمعلقة */
 .completed { border-bottom-color: #4caf50; }
 .completed p { color: #4caf50; }
 .pending { border-bottom-color: #ff9800; }
 .pending p { color: #ff9800; }
 
-/* حاوية المهام */
+/* ========================================================
+   5. INTERACTIVE TASKS SUBMISSION CARDS
+   5. بطاقات إضافة واستعراض قوائم المهام التفاعلية
+   ======================================================== */
 .task-container {
     background: white;
     padding: 30px;
@@ -192,11 +222,24 @@ header p {
 .task-info { display: flex; align-items: center; }
 .task-text { margin-left: 15px; font-size: 1.05rem; }
 .actions i { margin-left: 15px; cursor: pointer; color: #bdbdbd; transition: 0.3s; }
+
+/* Interactive color updates when hover triggers on control icons */
+/* تحديثات لونية تفاعلية عند مرور الفأرة على أيقونات التحكم والعمليات */
 .actions .delete-icon:hover { color: #f44336; }
 .actions .edit-icon:hover { color: #3949ab; }
 
-/* الإحصائيات الأسبوعية */
+/* ========================================================
+   6. WEEKLY PERFORMANCE ANALYSIS VIEWS
+   6. واجهات تحليل مستويات الأداء الأسبوعي
+   ======================================================== */
+.weekly-analysis {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
 .weekly-stats-container h2 { margin-bottom: 25px; color: #1a237e; }
+
 .chart-box {
     background: #f1f3f9;
     padding: 30px;
@@ -222,23 +265,81 @@ header p {
     font-weight: bold;
 }
 
+.table-container {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-top: 20px;
+}
+
+.table-container h2 {
+    margin-bottom: 20px;
+    color: #1a237e;
+    font-size: 1.4rem;
+}
+
+/* ========================================================
+   7. STATISTICAL TABLES LOG CALIBRATION
+   7. ضبط ومحاذاة جداول السجلات الإحصائية
+   ======================================================== */
 table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 10px;
 }
 
-table th, table td {
-    padding: 18px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
+/* Precise alignment to solve header slanting and misalignments */
+/* ضبط ومحاذاة دقيقة لحل مشكلات ميلان العناوين وعدم اتساق البيانات */
+table th {
+    background-color: #f8f9fa;
+    color: #1a237e;
+    padding: 15px;
+    text-align: center; /* Perfect heading centering / توسيط العناوين بالضبط */
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-bottom: 2px solid #eee;
 }
 
-table th { color: #757575; font-size: 0.9rem; }
-.status-badge { padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
-.perfect { background: #e8f5e9; color: #2e7d32; }
-.warning { background: #fff3e0; color: #ef6c00; }
+table td {
+    padding: 15px;
+    text-align: center; /* Perfect columns alignment underneath header / توسيط البيانات تحت العناوين بالضبط */
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f1f1;
+}
 
-/* التنبيه المنبثق (Toast) */
+/* Text status color updates for stats numbers logs */
+/* تحديثات ألوان النصوص والخطوط الخاصة بأرقام السجلات الإحصائية */
+.text-complete {
+    color: #2ecc71 !important; /* Green / أخضر */
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.text-incomplete {
+    color: #e74c3c !important; /* Red / أحمر */
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Badge overlay adjustments for dynamic row records */
+/* تعديلات الشارات الملونة الخاصة بسجلات الصفوف الديناميكية */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.perfect { background-color: #e8f5e9; color: #2e7d32; }
+.warning { background-color: #fff3e0; color: #ef6c00; }
+.danger { background-color: #ffebee; color: #c62828; }
+
+/* ========================================================
+   8. SYSTEM ALERT OVERLAYS & PUSH NOTIFICATIONS
+   8. واجهات التنبيهات المنبثقة والإشعارات الفورية
+   ======================================================== */
 .toast {
     position: fixed;
     bottom: 30px;
@@ -260,110 +361,11 @@ table th { color: #757575; font-size: 0.9rem; }
     margin-bottom: 8px;
     font-weight: bold;
 }
-/* الأكواد السابقة مضافة إليها تحسينات للجداول والقوائم */
-.table-container {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    margin-top: 20px;
-}
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-table th, table td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #f1f1f1;
-}
-
-table th {
-    color: #1a237e;
-    font-weight: 600;
-}
-
-.status-badge {
-    padding: 5px 12px;
-    border-radius: 15px;
-    font-size: 0.85rem;
-}
-
-.perfect { background-color: #e8f5e9; color: #2e7d32; }
-.warning { background-color: #fff3e0; color: #ef6c00; }
-
-/* تأكدي من بقاء السايدبار ثابت العرض */
-.sidebar {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-}
-/* تنسيقات إضافية لصفحة Weekly */
-.weekly-analysis {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.table-container h2 {
-    margin-bottom: 20px;
-    color: #1a237e;
-    font-size: 1.4rem;
-}
-
-/* ضبط محاذاة الجدول (لحل مشكلة ميلان الهيدينق) */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-table th {
-    background-color: #f8f9fa;
-    color: #1a237e;
-    padding: 15px;
-    text-align: center; /* توسيط الهيدينق بالضبط */
-    font-size: 0.9rem;
-    border-bottom: 2px solid #eee;
-}
-
-table td {
-    padding: 15px;
-    text-align: center; /* توسيط البيانات تحت الهيدينق */
-    vertical-align: middle;
-    border-bottom: 1px solid #f1f1f1;
-}
-
-/* تنسيق ألوان الأرقام (المكتمل وغير المكتمل) */
-.text-complete {
-    color: #2ecc71 !important; /* أخضر */
-    font-weight: bold;
-    font-size: 1.1rem;
-}
-
-.text-incomplete {
-    color: #e74c3c !important; /* أحمر */
-    font-weight: bold;
-    font-size: 1.1rem;
-}
-
-/* تحسين شكل الستاتوس بادج */
-.status-badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    display: inline-block;
-}
-
-.perfect { background-color: #e8f5e9; color: #2e7d32; }
-.warning { background-color: #fff3e0; color: #ef6c00; }
-.danger { background-color: #ffebee; color: #c62828; }
-
-
-/* تنسيقات صفحة تسجيل الدخول */
+/* ========================================================
+   9. LOGIN & REGISTRATION ACCESS VIEWS
+   9. واجهات تسجيل الدخول وإنشاء الحسابات
+   ======================================================== */
 .login-body {
     background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
     display: flex;
@@ -407,6 +409,8 @@ table td {
     margin-bottom: 20px;
 }
 
+/* Alignment logic positioning dynamic icons inside input bounds */
+/* قواعد المحاذاة البرمجية لوضع الأيقونات الحركية داخل حدود حقول الإدخال */
 .input-group i {
     position: absolute;
     left: 15px;
@@ -459,13 +463,11 @@ table td {
     text-decoration: none;
 }
 
-/* تنسيق إضافي لضمان ظهور أيقونة الإيميل وتأكيد كلمة المرور بشكل جيد */
 .input-group i.fa-envelope, 
 .input-group i.fa-check-circle {
     color: #9e9e9e;
 }
 
-/* تحسين شكل الروابط في الفوتر */
 .login-footer span {
     color: #757575;
     margin-top: 10px;
