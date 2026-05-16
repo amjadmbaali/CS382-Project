@@ -111,21 +111,23 @@ class TaskViewer {
         // Transmitting new string elements to core index process using asynchronous post
         // تمرير نصوص المهام الجديدة إلى عمليات ملف الاندكس الأساسي باستخدام الإرسال غير المتزامن
         $("#add-btn").click(function(){
-            let taskValue = $("#task-input").val();
 
-            if(taskValue == ""){
-                alert("Please enter a task");
-            }
-            else{
-                $.post("index.php",
-                {
-                    task: taskValue
-                },
-                function(data){
-                    location.reload();
-                });
-            }
+    let taskValue = $("#task-input").val();
+
+    if(taskValue == ""){
+        alert("Please enter a task");
+    }
+    else{
+        $.post("index.php",
+        {
+            add_task_text: taskValue
+        },
+        function(data){
+            location.reload();
         });
+    }
+
+});
 
         // Triggering background delete instructions referencing unique row ID
         // إطلاق تعليمات الحذف في الخلفية بالإشارة إلى المعرف الفريد الخاص بالسجل
