@@ -106,86 +106,77 @@ class TaskViewer {
     <script>
     // jQuery code block handling active UI events and routing AJAX background posts
     // كود الجي كويري للتحكم بأحداث الواجهة وتوجيه طلبات الأجاكس البرمجية في الخلفية
-        $("#add-btn").click(function(){
+$(document).ready(function(){
 
-    let taskValue = $("#task-input").val();
+    $("#add-btn").click(function(){
 
-    if(taskValue == ""){
-        alert("Please enter a task");
-    }
-    else{
-        $.post("index.php",
-        {
-            add_task_text: taskValue
-        },
-        function(data){
-            location.reload();
-        });
-    }
+        let taskValue = $("#task-input").val();
 
-});
-
-        // Triggering background delete instructions referencing unique row ID
-        // إطلاق تعليمات الحذف في الخلفية بالإشارة إلى المعرف الفريد الخاص بالسجل
-        $(".delete-icon").click(function(){
-    alert("Are you sure you want to delete this task?.");
-            let id = $(this).data("id");
+        if(taskValue == ""){
+            alert("Please enter a task");
+        }
+        else{
             $.post("index.php",
             {
-                delete_id: id
+                add_task_text: taskValue
             },
             function(data){
                 location.reload();
             });
-        });
+        }
 
-       $(".edit-icon").click(function(){
+    });
 
-    let id = $(this).data("id");
+    $(".delete-icon").click(function(){
+        alert("Are you sure you want to delete this task?");
 
-    let newTask = prompt("Edit Task");
-
-    if(newTask != "" && newTask != null){
+        let id = $(this).data("id");
 
         $.post("index.php",
         {
-            edit_id: id,
-            new_task: newTask
+            delete_id: id
+        },
+        function(data){
+            location.reload();
+        });
+    });
+
+    $(".edit-icon").click(function(){
+
+        let id = $(this).data("id");
+        let newTask = prompt("Edit Task");
+
+        if(newTask != "" && newTask != null){
+            $.post("index.php",
+            {
+                edit_id: id,
+                new_task: newTask
+            },
+            function(data){
+                location.reload();
+            });
+        }
+
+    });
+
+    $(".check-task").click(function(){
+
+        let id = $(this).data("id");
+
+        $(this).next().css("color","gray");
+
+        $.post("index.php",
+        {
+            toggle_id: id,
+            current_status: "pending"
         },
         function(data){
             location.reload();
         });
 
-    }
-
-});
-
-        $(".status-checkbox").click(function(){
-    let id = $(this).data("id");
-    let status = $(this).data("status");
-
-    $(this).next().css("color","gray");
-
-    $.post("index.php",
-    {
-        toggle_id: id,
-        current_status: status
-    },
-    function(data){
-        location.reload();
     });
 
 });
-
-        // Asynchronous retrieval loading latest notifications statistics updates
-        // جلب الإحصائيات المحدثة لعداد التنبيهات بشكل غير متزامن عند تفعيل الحدث
-        $("#notif-bell").click(function(){
-            $.get("get_notification.php", function(data){
-                $("#toast-count").text(data);
-            });
-        });
-
-    });
     </script>
 </body>
 </html>
