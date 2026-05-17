@@ -272,20 +272,24 @@ $(document).ready(function() {
     });
 
     // Launches a prompt dialogue allowing dynamic text updates
-    $(document).on("click", ".actions .edit-icon", function() {
-        let id = $(this).data("id");
-        let currentText = $(this).closest(".task-item").find(".task-text").text().trim();
-        let customTask = prompt("Edit your task description:", currentText);
-        
-        if (customTask !== null && customTask.trim() !== "") {
-            $.post("index.php", { 
-                edit_id: id, 
-                new_task: customTask.trim() 
-            }, function(data) {
-                location.reload();
-            });
-        }
-    });
+   $(".edit-icon").click(function(){
+    let id = $(this).data("id");
+    let newTask = prompt("Edit Task");
+
+    if(newTask != "" && newTask != null){
+
+        $.post("index.php",
+        {
+            edit_id: id,
+            new_task: newTask
+        },
+        function(data){
+            location.reload();
+        });
+
+    }
+
+});
 
     // Delete task entry asynchronously via AJAX
    $(".delete-icon").click(function(){
