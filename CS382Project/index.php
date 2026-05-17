@@ -242,8 +242,8 @@ $(document).ready(function() {
     setInterval(pushNotificationCheck, 5000); 
 
 
-    // Add task asynchronously via AJAX
-   $("#add-btn").click(function(){
+   // Add task asynchronously via AJAX
+    $("#add-btn").click(function(){
 
     let taskValue = $("#task-input").val();
 
@@ -263,17 +263,27 @@ $(document).ready(function() {
 });
 
     // Toggle task status checkbox asynchronously via AJAX
-    $(".status-checkbox").change(function() {
-        let id = $(this).data("id");
-        let status = $(this).data("status");
-        $.post("index.php", { toggle_id: id, current_status: status }, function() {
-            location.reload();
-        });
+  $(".status-checkbox").click(function(){
+    let id = $(this).data("id");
+    let status = $(this).data("status");
+
+    $(this).next().css("color","gray");
+    $.post("index.php",
+    {
+        toggle_id: id,
+        current_status: status
+    },
+    function(data){
+        location.reload();
     });
+
+});
 
     // Launches a prompt dialogue allowing dynamic text updates
    $(".edit-icon").click(function(){
+
     let id = $(this).data("id");
+
     let newTask = prompt("Edit Task");
 
     if(newTask != "" && newTask != null){
@@ -291,12 +301,9 @@ $(document).ready(function() {
 
 });
 
-    // Delete task entry asynchronously via AJAX
    $(".delete-icon").click(function(){
     alert("Are you sure you want to delete this task?.");
-
             let id = $(this).data("id");
-
             $.post("index.php",
             {
                 delete_id: id
