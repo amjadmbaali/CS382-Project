@@ -106,10 +106,6 @@ class TaskViewer {
     <script>
     // jQuery code block handling active UI events and routing AJAX background posts
     // كود الجي كويري للتحكم بأحداث الواجهة وتوجيه طلبات الأجاكس البرمجية في الخلفية
-    $(document).ready(function(){
-
-        // Transmitting new string elements to core index process using asynchronous post
-        // تمرير نصوص المهام الجديدة إلى عمليات ملف الاندكس الأساسي باستخدام الإرسال غير المتزامن
         $("#add-btn").click(function(){
 
     let taskValue = $("#task-input").val();
@@ -132,8 +128,8 @@ class TaskViewer {
         // Triggering background delete instructions referencing unique row ID
         // إطلاق تعليمات الحذف في الخلفية بالإشارة إلى المعرف الفريد الخاص بالسجل
         $(".delete-icon").click(function(){
+    alert("Are you sure you want to delete this task?.");
             let id = $(this).data("id");
-
             $.post("index.php",
             {
                 delete_id: id
@@ -143,33 +139,43 @@ class TaskViewer {
             });
         });
 
-        // Forwarding live editing string adjustments without breaking window flow
-        // تمرير التعديلات النصية الفورية للمهمة دون كسر انسيابية وتدفق النافذة الحالي
-        $(".edit-icon").click(function(){
-            let id = $(this).data("id");
-            $(this).parents(".task-item").text("Edited Task");
-            $.post("index.php",
-            {
-                edit_id: id,
-                new_task: "Edited Task"
-            },
-            function(data){
-                location.reload();
-            });
+       $(".edit-icon").click(function(){
+
+    let id = $(this).data("id");
+
+    let newTask = prompt("Edit Task");
+
+    if(newTask != "" && newTask != null){
+
+        $.post("index.php",
+        {
+            edit_id: id,
+            new_task: newTask
+        },
+        function(data){
+            location.reload();
         });
 
-        // Committing updated check state value directly into storage data fields
-        // اعتماد قيمة الاختيار المحدثة للمهمة (مكتملة) مباشرة داخل حقول تخزين البيانات
-        $(".check-task").click(function(){
-            let id = $(this).data("id");
-            $.post("index.php",
-            {
-                complete_id: id
-            },
-            function(data){
-                location.reload();
-            });
-        });
+    }
+
+});
+
+        $(".status-checkbox").click(function(){
+    let id = $(this).data("id");
+    let status = $(this).data("status");
+
+    $(this).next().css("color","gray");
+
+    $.post("index.php",
+    {
+        toggle_id: id,
+        current_status: status
+    },
+    function(data){
+        location.reload();
+    });
+
+});
 
         // Asynchronous retrieval loading latest notifications statistics updates
         // جلب الإحصائيات المحدثة لعداد التنبيهات بشكل غير متزامن عند تفعيل الحدث
