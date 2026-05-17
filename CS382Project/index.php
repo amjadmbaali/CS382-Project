@@ -255,7 +255,7 @@ $(document).ready(function() {
         {
             add_task_text: taskValue
         },
-        function(data){
+        function(){
             location.reload();
         });
     }
