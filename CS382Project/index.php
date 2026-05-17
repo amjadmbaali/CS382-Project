@@ -288,14 +288,19 @@ $(document).ready(function() {
     });
 
     // Delete task entry asynchronously via AJAX
-    $(document).on("click", ".actions .delete-icon", function() {
-        if (confirm("Are you sure you want to delete this task?")) {
+   $(".delete-icon").click(function(){
+    alert("Are you sure you want to delete this task?.");
+
             let id = $(this).data("id");
-            $.post("index.php", { delete_id: id }, function() {
+
+            $.post("index.php",
+            {
+                delete_id: id
+            },
+            function(data){
                 location.reload();
             });
-        }
-    });
+        });
 
 });
 </script>
