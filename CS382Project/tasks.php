@@ -87,8 +87,7 @@ class TaskViewer {
                             echo '
                             <li class="task-item">
                                 <div class="task-info">
-                                  <input type="checkbox" class="check-task" data-id="'.$row['id'].'" '.$status.'>
-                                    <span class="task-text">'.$row['task_text'].'</span>
+                <input type="checkbox" class="check-task" data-id="'.$row['id'].'" data-status="'.$row['status'].'" '.$status.'>                                    <span class="task-text">'.$row['task_text'].'</span>
                                 </div>
                                 <div class="actions">
                                     <i class="fas fa-edit edit-icon" data-id="'.$row['id'].'"></i>
@@ -162,13 +161,14 @@ $(document).ready(function(){
     $(".check-task").click(function(){
 
         let id = $(this).data("id");
+    let status = $(this).data("status");
 
         $(this).next().css("color","gray");
 
         $.post("index.php",
         {
             toggle_id: id,
-            current_status: "pending"
+            current_status: status
         },
         function(data){
             location.reload();
